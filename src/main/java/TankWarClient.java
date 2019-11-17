@@ -1,4 +1,6 @@
 import java.awt.*;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
@@ -17,7 +19,6 @@ public class TankWarClient extends Frame {
         g.fillOval(x,y,30,30);
         g.setColor(c);
 
-        y+=5;
     }
 
     /**
@@ -53,6 +54,9 @@ public class TankWarClient extends Frame {
 
         //禁止改变边框大小
         this.setResizable(false);
+
+        //注入键盘监听器
+        this.addKeyListener(new KeyMonitor());
         setVisible(true);
         new Thread(new PrintThread()).start();
     }
@@ -75,6 +79,32 @@ public class TankWarClient extends Frame {
                     e.printStackTrace();
                 }
             }
+        }
+    }
+
+    /**
+     * 键盘监听器
+     */
+    private class KeyMonitor extends KeyAdapter{
+
+        public void keyPressed(KeyEvent e){
+            int key = e.getKeyCode();
+            switch (key){
+                case KeyEvent.VK_RIGHT:
+                    x+=10;
+                    break;
+                case KeyEvent.VK_DOWN:
+                    y+=10;
+                    break;
+                case KeyEvent.VK_LEFT:
+                    x-=10;
+                    break;
+                case KeyEvent.VK_UP:
+                    y-=10;
+                    break;
+
+            }
+
         }
     }
 }
