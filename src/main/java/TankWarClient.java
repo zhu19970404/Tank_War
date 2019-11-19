@@ -86,10 +86,21 @@ public class TankWarClient extends Frame {
      */
     private class KeyMonitor extends KeyAdapter{
 
+        /**
+         * 监听键盘按下
+         * @param e
+         */
         public void keyPressed(KeyEvent e) {
-            tank.tankMove(e);
+            tank.keyPressed(e);
         }
 
+        /**
+         * 监听键盘抬起
+         */
+        public void keyReleased(KeyEvent e) {
+            tank.keyReleased(e);
         }
+
+    }
     }
 
