@@ -9,11 +9,13 @@ public class TankWarClient extends Frame {
     public static final int GAME_WIDTH =800;
     public static final int GAME_HEIGHT = 600;
 
-    Tank tank = new Tank(50,50);
+    Tank tank = new Tank(50,50,this);
+    Missile m = null;
 
     Image offScreenImage = null;
     public void paint(Graphics g){
-
+        if(m != null)
+            m.draw(g);
         tank.draw(g);
 
     }
@@ -60,11 +62,6 @@ public class TankWarClient extends Frame {
         new Thread(new PrintThread()).start();
     }
 
-    public static void main(String[] args) {
-        TankWarClient client = new TankWarClient();
-        client.lauchFrame();
-    }
-
     /**
      * 写一个内部类线程来驱动坦克
      */
@@ -101,6 +98,13 @@ public class TankWarClient extends Frame {
             tank.keyReleased(e);
         }
 
+    }
+
+
+
+    public static void main(String[] args) {
+        TankWarClient client = new TankWarClient();
+        client.lauchFrame();
     }
     }
 

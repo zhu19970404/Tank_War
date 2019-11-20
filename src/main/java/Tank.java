@@ -3,6 +3,7 @@ import java.awt.event.KeyEvent;
 
 public class Tank {
     private int x, y;
+    private TankWarClient tc;
 
     public static final int tankmoveX = 5;
     public static final int tankmovey = 5;
@@ -19,6 +20,11 @@ public class Tank {
         this.y = y;
     }
 
+    public Tank(int x, int y, TankWarClient tc) {
+       this(x,y);
+        this.tc = tc;
+    }
+
     public void draw(Graphics g) {
         Color c = g.getColor();
         g.setColor(Color.RED);
@@ -33,6 +39,9 @@ public class Tank {
     public void keyPressed(KeyEvent e) {
         int key = e.getKeyCode();
         switch (key) {
+            case KeyEvent.VK_CONTROL:
+            tc.m = fire();
+            break;
             case KeyEvent.VK_RIGHT:
                 D_RIGTH=true;
                 break;
@@ -48,6 +57,14 @@ public class Tank {
         }
 
         judge();
+    }
+
+    /**
+     * 开火
+     *
+     */
+    private Missile fire() {
+        return new Missile(x,y,dir);
     }
 
     /**
