@@ -8,12 +8,18 @@ public class Tank {
     public static final int tankmoveX = 5;
     public static final int tankmovey = 5;
 
+    public static final int WIDTH = 30;
+    public static final int HEIGHT = 30;
+
     private boolean D_UP = false,D_DOWN = false,D_LEFT = false,D_RIGTH = false;
-
-
-
     enum Direction{U,UR,R,RD,D,DL,L,LU,STOP}
+
+    //坦克移动方向
     private Direction dir = Direction.STOP;
+    //炮筒方向
+    private Direction ptdir = Direction.D;
+
+
 
     public Tank(int x, int y) {
         this.x = x;
@@ -25,11 +31,40 @@ public class Tank {
         this.tc = tc;
     }
 
+
+
     public void draw(Graphics g) {
         Color c = g.getColor();
         g.setColor(Color.RED);
-        g.fillOval(x, y, 30, 30);
+        g.fillOval(x, y, WIDTH, HEIGHT);
         g.setColor(c);
+
+        switch (ptdir){
+            case U:
+                g.drawLine(x+Tank.WIDTH/2,y+Tank.HEIGHT/2,x+Tank.WIDTH/2,y);
+                break;
+            case UR:
+                g.drawLine(x+Tank.WIDTH/2,y+Tank.HEIGHT/2,x+Tank.WIDTH,y);
+                break;
+            case R:
+                g.drawLine(x+Tank.WIDTH/2,y+Tank.HEIGHT/2,x+Tank.WIDTH,y+Tank.HEIGHT/2);
+                break;
+            case RD:
+                g.drawLine(x+Tank.WIDTH/2,y+Tank.HEIGHT/2,x+Tank.WIDTH,y+Tank.HEIGHT);
+                break;
+            case D:
+                g.drawLine(x+Tank.WIDTH/2,y+Tank.HEIGHT/2,x+Tank.WIDTH/2,y+Tank.HEIGHT);
+                break;
+            case DL:
+                g.drawLine(x+Tank.WIDTH/2,y+Tank.HEIGHT/2,x,y+Tank.HEIGHT);
+                break;
+            case L:
+                g.drawLine(x+Tank.WIDTH/2,y+Tank.HEIGHT/2,x,y+Tank.HEIGHT/2);
+                break;
+            case LU:
+                g.drawLine(x+Tank.WIDTH/2,y+Tank.HEIGHT/2,x,y);
+                break;
+        }
     }
 
     /**
@@ -40,8 +75,8 @@ public class Tank {
         int key = e.getKeyCode();
         switch (key) {
             case KeyEvent.VK_CONTROL:
-            tc.m = fire();
-            break;
+                tc.m = fire();
+                break;
             case KeyEvent.VK_RIGHT:
                 D_RIGTH=true;
                 break;
@@ -64,7 +99,9 @@ public class Tank {
      *
      */
     private Missile fire() {
-        return new Missile(x,y,dir);
+        int x = this.x+Tank.WIDTH/2-Missile.WIDTH/2;
+        int y = this.y+Tank.HEIGHT/2-Missile.HEIGHT/2;
+        return new Missile(x,y,ptdir);
     }
 
     /**
@@ -104,7 +141,7 @@ public class Tank {
         if(!D_UP&&D_DOWN&&D_LEFT&&!D_RIGTH) dir = Direction.DL;
         if(!D_UP&&!D_DOWN&&D_LEFT&&!D_RIGTH) dir = Direction.L;
         if(D_UP&&!D_DOWN&&D_LEFT&&!D_RIGTH) dir = Direction.LU;
-
+        if(!D_UP&&!D_DOWN&&!D_LEFT&&!D_RIGTH) dir = Direction.STOP;
         move();
     }
 
@@ -141,7 +178,13 @@ public class Tank {
                 y-=tankmovey;
                 x-=tankmoveX;
                 break;
-    }
+            case STOP:
+                break;
+         }
+         if(this.dir!=Direction.STOP){
+             this.ptdir = this.dir;
+         }
+
 
 
     }
