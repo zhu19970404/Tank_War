@@ -2,7 +2,7 @@ import java.awt.*;
 import java.awt.event.KeyEvent;
 
 public class Tank {
-    private int x, y;
+     int x, y;
     private TankWarClient tc;
 
     public static final int tankmoveX = 5;
@@ -39,6 +39,7 @@ public class Tank {
         g.fillOval(x, y, WIDTH, HEIGHT);
         g.setColor(c);
 
+        //炮筒的方向
         switch (ptdir){
             case U:
                 g.drawLine(x+Tank.WIDTH/2,y+Tank.HEIGHT/2,x+Tank.WIDTH/2,y);
@@ -65,6 +66,7 @@ public class Tank {
                 g.drawLine(x+Tank.WIDTH/2,y+Tank.HEIGHT/2,x,y);
                 break;
         }
+
     }
 
     /**
@@ -74,9 +76,6 @@ public class Tank {
     public void keyPressed(KeyEvent e) {
         int key = e.getKeyCode();
         switch (key) {
-            case KeyEvent.VK_CONTROL:
-                tc.m = fire();
-                break;
             case KeyEvent.VK_RIGHT:
                 D_RIGTH=true;
                 break;
@@ -101,7 +100,7 @@ public class Tank {
     private Missile fire() {
         int x = this.x+Tank.WIDTH/2-Missile.WIDTH/2;
         int y = this.y+Tank.HEIGHT/2-Missile.HEIGHT/2;
-        return new Missile(x,y,ptdir);
+        return new Missile(x,y,tc,ptdir);
     }
 
     /**
@@ -111,6 +110,9 @@ public class Tank {
     public void keyReleased(KeyEvent e) {
         int key = e.getKeyCode();
         switch (key) {
+            case KeyEvent.VK_CONTROL:
+                tc.Missiles.add(fire());
+                break;
             case KeyEvent.VK_RIGHT:
                 D_RIGTH=false;
                 break;
@@ -181,12 +183,21 @@ public class Tank {
             case STOP:
                 break;
          }
+
+         //给炮筒方向
          if(this.dir!=Direction.STOP){
              this.ptdir = this.dir;
          }
 
-
-
+         //设置坦克不出界
+        if(x<0)
+            x=0;
+        if(x>765)
+            x=765;
+        if(y<25)
+            y=25;
+        if(y>565)
+            y=565;
     }
 
 

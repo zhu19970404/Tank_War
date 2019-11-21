@@ -3,19 +3,28 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-
+import java.util.ArrayList;
+import java.util.List;
 public class TankWarClient extends Frame {
 
     public static final int GAME_WIDTH =800;
     public static final int GAME_HEIGHT = 600;
 
     Tank tank = new Tank(50,50,this);
-    Missile m = null;
+    List<Missile> Missiles  = new ArrayList<Missile>();
 
     Image offScreenImage = null;
     public void paint(Graphics g){
-        if(m != null)
-            m.draw(g);
+        Color c = g.getColor();
+        g.setColor(Color.GREEN);
+        g.drawString("missile count:"+Missiles.size(),10,50);
+        g.setColor(c);
+
+        if(Missiles != null){
+         for (int i=0;i<Missiles.size();i++){
+             Missiles.get(i).draw(g);
+         }
+        }
         tank.draw(g);
 
     }
