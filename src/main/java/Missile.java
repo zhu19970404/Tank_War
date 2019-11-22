@@ -12,6 +12,9 @@ public class Missile {
     public static final int WIDTH = 10;
     public static final int HEIGHT = 10;
 
+    //判断炮弹的存活
+    private boolean live = true;
+
 
     public Missile(int x, int y, Tank.Direction dir) {
         this.x = x;
@@ -27,6 +30,11 @@ public class Missile {
     }
 
     public void draw(Graphics g){
+
+        if (!live) {
+            tc.Missiles.remove(this);
+            return;
+        }
         Color c = g.getColor();
         g.setColor(Color.RED);
         g.fillOval(x,y,WIDTH,HEIGHT);
@@ -67,9 +75,28 @@ public class Missile {
                 break;
         }
         if (x<0 || y<0 || x>tc.GAME_WIDTH || y>tc.GAME_HEIGHT){
-            tc.Missiles.remove(this);
+            live = false;
         }
     }
 
+    /**
+     * 打击坦克
+     * @param tank
+     * @return
+     */
+    public boolean hitTant(Tank tank){
+        if(this.getRect().intersects(tank.getRect())&&tank.isLive()) {
+            tank.setLive(false);
+            live = false;
+        }
+        return tank.isLive();
+    }
 
+    /**
+     * 判断碰撞辅助类
+     * @return
+     */
+    public Rectangle getRect(){
+        return new Rectangle(x,y,WIDTH,HEIGHT);
+    }
 }

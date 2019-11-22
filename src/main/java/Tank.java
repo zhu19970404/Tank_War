@@ -2,7 +2,7 @@ import java.awt.*;
 import java.awt.event.KeyEvent;
 
 public class Tank {
-     int x, y;
+    private int x, y;
     private TankWarClient tc;
 
     public static final int tankmoveX = 5;
@@ -19,23 +19,38 @@ public class Tank {
     //炮筒方向
     private Direction ptdir = Direction.D;
 
+    //判断坦克性质
+    private boolean good;
 
+    //判断坦克的生死
+   private boolean live = true;
 
-    public Tank(int x, int y) {
-        this.x = x;
-        this.y = y;
+    public void setLive(boolean live) {
+        this.live = live;
     }
 
-    public Tank(int x, int y, TankWarClient tc) {
-       this(x,y);
-        this.tc = tc;
+    public boolean isLive() {
+        return live;
+    }
+
+    public Tank(int x, int y, TankWarClient tc, boolean good) {
+       this.x = x;
+       this.y = y;
+       this.tc = tc;
+       this.good = good;
     }
 
 
 
     public void draw(Graphics g) {
+
+        if(!live) return;
+
         Color c = g.getColor();
-        g.setColor(Color.RED);
+        if(good == true)
+            g.setColor(Color.RED);
+        else
+            g.setColor(Color.GREEN);
         g.fillOval(x, y, WIDTH, HEIGHT);
         g.setColor(c);
 
@@ -200,6 +215,13 @@ public class Tank {
             y=565;
     }
 
+    /**
+     * 判断碰撞辅助类
+     * @return
+     */
+    public Rectangle getRect(){
+        return new Rectangle(x,y,WIDTH,HEIGHT);
+    }
 
 
 }

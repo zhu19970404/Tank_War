@@ -10,10 +10,14 @@ public class TankWarClient extends Frame {
     public static final int GAME_WIDTH =800;
     public static final int GAME_HEIGHT = 600;
 
-    Tank tank = new Tank(50,50,this);
+    Tank gtank = new Tank(50,50,this,true);
+    Tank btank = new Tank(50,200,this,false);
+
     List<Missile> Missiles  = new ArrayList<Missile>();
 
     Image offScreenImage = null;
+
+
     public void paint(Graphics g){
         Color c = g.getColor();
         g.setColor(Color.GREEN);
@@ -22,10 +26,15 @@ public class TankWarClient extends Frame {
 
         if(Missiles != null){
          for (int i=0;i<Missiles.size();i++){
-             Missiles.get(i).draw(g);
+            Missile m =  Missiles.get(i);
+            m.hitTant(btank);
+            m.draw(g);
+
          }
         }
-        tank.draw(g);
+        gtank.draw(g);
+        btank.draw(g);
+
 
     }
 
@@ -97,14 +106,14 @@ public class TankWarClient extends Frame {
          * @param e
          */
         public void keyPressed(KeyEvent e) {
-            tank.keyPressed(e);
+            gtank.keyPressed(e);
         }
 
         /**
          * 监听键盘抬起
          */
         public void keyReleased(KeyEvent e) {
-            tank.keyReleased(e);
+            gtank.keyReleased(e);
         }
 
     }
